@@ -15,6 +15,8 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter频道推送插件，可接�
 
 本插件由[HanayoriBot](https://github.com/kanomahoro/nonebot-twitter)修改而来，基于[NoneBot2](https://github.com/nonebot/nonebot2)与[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)，可以及时将Twitter用户的最新推文推送至子频道，并且自带基于百度翻译的推文翻译接口，及时跟进所关注的账号的推文，增加频道活跃度。
 
+注意：本插件目前只支持频道内使用，且不能与HanayoriBot共同使用。频道相关功能通过[nonebot2频道适配补丁](https://gist.github.com/mnixry/57033047be55956e2168284bcf0bd4b6)实现，并增加了部分代码。
+
 ## 特色
 
 1. **轻依赖**：本插件在编写时尽量避免了采用使用第三方包，以减少依赖项；
