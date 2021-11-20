@@ -21,7 +21,7 @@ from . import config
 import asyncio
 import nonebot
 import threading
-from nonebot_guild_patch import GuildMessageEvent
+from nonebot_guild_patch import GuildMessageEvent, ChannelDestoryedNoticeEvent
 
 model.Init()
 config.token = data_source.init()
@@ -109,7 +109,7 @@ async def tweet():  # 定时推送用户最新推文
     tweet_index += 1
 
 
-adduser = on_command('推特关注', priority=5, permission=GROUP_ADMIN | GROUP_OWNER | PRIVATE_FRIEND | SUPERUSER, )
+adduser = on_command('推特关注', priority=5, permission=SUPERUSER, )
 
 
 @adduser.handle()  # 添加用户
@@ -141,7 +141,7 @@ async def handle(bot: Bot, event: GuildMessageEvent, state: T_State):
 
 
 removeuser = on_command('推特取关', priority=5,
-                        permission=GROUP_ADMIN | GROUP_OWNER | PRIVATE_FRIEND | SUPERUSER, )
+                        permission=SUPERUSER, )
 
 
 @removeuser.handle()  # 取关用户
@@ -167,7 +167,7 @@ async def handle(bot: Bot, event: GuildMessageEvent, state: T_State):
 
 
 alllist = on_command('推特列表', priority=5,
-                     permission=GROUP_ADMIN | GROUP_OWNER | PRIVATE_FRIEND | SUPERUSER, )
+                     permission=SUPERUSER, )
 
 
 @alllist.handle()  # 显示当前子频道中的关注列表
@@ -192,7 +192,7 @@ async def handle(bot: Bot, event: GuildMessageEvent, state: T_State):
     await bot.send(message=Msg, event=event)
 
 
-ontranslate = on_command('开启翻译', priority=5, permission=GROUP_ADMIN | GROUP_OWNER | PRIVATE_FRIEND | SUPERUSER, )
+ontranslate = on_command('开启翻译', priority=5, permission=SUPERUSER, )
 
 
 @ontranslate.handle()  # 开启推文翻译
@@ -218,7 +218,7 @@ async def handle(bot: Bot, event: GuildMessageEvent, state: T_State):
     await bot.send(message=Msg, event=event)
 
 
-offtranslate = on_command('关闭翻译', priority=5, permission=GROUP_ADMIN | GROUP_OWNER | PRIVATE_FRIEND | SUPERUSER, )
+offtranslate = on_command('关闭翻译', priority=5, permission=SUPERUSER, )
 
 
 @offtranslate.handle()  # 关闭推文翻译
@@ -244,13 +244,13 @@ async def handle(bot: Bot, event: GuildMessageEvent, state: T_State):
     await bot.send(message=Msg, event=event)
 
 
-help = on_command('推特帮助', priority=5, permission=GROUP_ADMIN | GROUP_OWNER | PRIVATE_FRIEND | SUPERUSER, )
+help = on_command('推特帮助', priority=5, permission=SUPERUSER, )
 
 
 @help.handle()  # 启动动态推送
 async def handle(bot: Bot, event: GuildMessageEvent, state: T_State):
     menu = 'HimesakaBot目前支持的功能：\n(ID为推特ID\'@\'后面的名称)\n推特关注 ID\n推特取关 ID\n推特列表\n开启翻译 ID\n关闭翻译 ID\n推特帮助\n'
-    info = '当前版本：v2.0a'
+    info = '当前版本：v1.1'
     msg = menu + info
     Msg = Message(msg)
     await bot.send(message=Msg, event=event)
@@ -260,9 +260,9 @@ group_decrease = on_notice(priority=5)
 
 
 @group_decrease.handle()
-async def _(bot: Bot, event: GroupDecreaseNoticeEvent, state: T_State):
-    id = event.get_session_id()
-    if not id.isdigit():
-        id = id.split('_')[1]
+async def _(bot: Bot, event: ChannelDestoryedNoticeEvent, state: T_State):
+    id = event.channel_info.owner_guild_id
+    cid = event.channel_info.channel_id
+    
     if event.self_id == event.user_id:
-        model.DeleteGroupCard(id)
+        model.DeleteGroupCard(id, cid)

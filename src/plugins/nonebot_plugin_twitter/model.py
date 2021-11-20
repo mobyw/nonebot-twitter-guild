@@ -65,10 +65,10 @@ def DeleteCard(screen_name: str, ID: str, cid: int):  # 删除订阅信息 返�
     return 0
 
 
-def DeleteGroupCard(ID: str):  # 删除群聊全部订阅列表
+def DeleteGroupCard(ID: str, cid: str):  # 删除子频道全部订阅列表
     users = GetUserList()
     for user in users:
-        DeleteCard(user[0], ID, 1)
+        DeleteCard(user[0], ID, cid)
 
 
 def GetCard(screen_name: str, ID: str, cid: int):  # 获取订阅信息
