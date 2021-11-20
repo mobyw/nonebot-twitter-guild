@@ -263,6 +263,4 @@ group_decrease = on_notice(priority=5)
 async def _(bot: Bot, event: ChannelDestoryedNoticeEvent, state: T_State):
     id = event.channel_info.owner_guild_id
     cid = event.channel_info.channel_id
-    
-    if event.self_id == event.user_id:
-        model.DeleteGroupCard(id, cid)
+    model.DeleteGroupCard(id, cid)
