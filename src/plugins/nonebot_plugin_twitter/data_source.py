@@ -1,43 +1,7 @@
 import httpx
 import random
 import hashlib
-import os
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from nonebot.log import logger
-
-
-def init():
-    token = ''
-
-#    if not os.path.exists('phantomjs.exe') and not os.path.exists('phantomjs'):
-#        logger.error('phantomjs不存在，插件加载失败！')
-#        raise Exception('Twitter插件加载失败！请下载phantomjs主程序，详见项目主页')
-
-    dcap = dict(DesiredCapabilities.PHANTOMJS)
-    dcap["phantomjs.page.settings.userAgent"] = (
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36 Edg/94.0.992.38')  # 设置user-agent请求头
-    dcap["phantomjs.page.settings.loadImages"] = False  # 禁止加载图片
-
-    driver = webdriver.PhantomJS(desired_capabilities=dcap)
-    driver.set_page_load_timeout(20)
-    driver.set_script_timeout(20)
-
-    try:
-        driver.get('https://mobile.twitter.com/Twitter')
-    except:
-        logger.error('twitter.com请求超时！')
-        driver.execute_script("window.stop()")
-
-    data = driver.get_cookie('gt')
-    driver.close()
-    driver.quit()
-    
-    if data == None:
-        logger.error('token初始化失败，请检查网络/代理是否正常！')
-        raise Exception('Twitter插件加载失败！请检查代理设置，详见项目主页')
-    token = data['value']
-    return token
 
 
 async def get_user_info(name: str, token: str):
@@ -54,9 +18,7 @@ async def get_user_info(name: str, token: str):
     )
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.get(
-                'https://mobile.twitter.com/i/api/graphql/B-dCk4ph5BZ0UReWK590tw/UserByScreenName', headers=headers,
-                params=params)
+            response = await client.get('https://mobile.twitter.com/i/api/graphql/B-dCk4ph5BZ0UReWK590tw/UserByScreenName', headers=headers, params=params)
         except:
             logger.error('twitter.com访问超时，请检查代理/网络设置！')
             logger.error('获取用户信息失败')
@@ -77,13 +39,11 @@ async def get_latest_tweet(user_id, token):
         'x-guest-token': '%s' % token,
     }
     params = (
-        ('variables',
-         '{"userId":"%s","count":2,"withTweetQuoteCount":true,"includePromotedContent":true,"withSuperFollowsUserFields":false,"withUserResults":true,"withBirdwatchPivots":false,"withReactionsMetadata":false,"withReactionsPerspective":false,"withSuperFollowsTweetFields":false,"withVoice":true}' % user_id),
+        ('variables', '{"userId":"%s","count":2,"withTweetQuoteCount":true,"includePromotedContent":true,"withSuperFollowsUserFields":false,"withUserResults":true,"withBirdwatchPivots":false,"withReactionsMetadata":false,"withReactionsPerspective":false,"withSuperFollowsTweetFields":false,"withVoice":true}' % user_id),
     )
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.get('https://mobile.twitter.com/i/api/graphql/OMMpfG9VCdQAK0KHaU1RSQ/UserTweets',
-                                        headers=headers, params=params)
+            response = await client.get('https://mobile.twitter.com/i/api/graphql/OMMpfG9VCdQAK0KHaU1RSQ/UserTweets', headers=headers, params=params)
         except:
             logger.error('twitter.com访问超时，请检查代理/网络设置！')
             logger.error('获取推文失败！')
@@ -94,11 +54,9 @@ async def get_latest_tweet(user_id, token):
 
 
 def get_tweet_details(data):
-    name = data[0]['content']['itemContent']['tweet_results']['result']['core']['user_results']['result']['legacy'][
-        'name']
-    screen_name = \
-    data[0]['content']['itemContent']['tweet_results']['result']['core']['user_results']['result']['legacy'][
-        'screen_name']
+    name = data[0]['content']['itemContent']['tweet_results']['result']['core']['user_results']['result']['legacy']['name']
+    screen_name = data[0]['content']['itemContent']['tweet_results'][
+        'result']['core']['user_results']['result']['legacy']['screen_name']
     quote = data[0]['content']['itemContent']['tweet_results']['result']
     data = retweet = data[0]['content']['itemContent']['tweet_results']['result']['legacy']
     is_quote = False
@@ -115,8 +73,8 @@ def get_tweet_details(data):
         is_retweet = True
         retweet = retweet['retweeted_status_result']['result']
     if is_quote:
-        text = '您关注的 {} 推特更新了：\n'.format(name) + data['full_text'] + '\n'
-        translate = data['full_text'] + '\n'
+        text = '您关注的 {} 推特更新了：\n'.format(name)+data['full_text']+'\n'
+        translate = data['full_text']+'\n'
         media_data = data['entities']
         if media_data.get('media') != None:
             media_data = media_data['media']
@@ -125,9 +83,9 @@ def get_tweet_details(data):
         quote_name = quote['core']['user_results']['result']['legacy']['name']
         text += '引用了 {} 的推文：\n'.format(quote_name)
         quote_text = quote['legacy']['full_text']
-        text += quote_text + '\n'
-        url = '推文地址：\nhttps://twitter.com/' + screen_name + '/status/' + tweet_id + '\n'
-        translate += quote_text + '\n'
+        text += quote_text+'\n'
+        url = '推文地址：\nhttps://twitter.com/'+screen_name+'/status/'+tweet_id+'\n'
+        translate += quote_text+'\n'
         media_data = quote['legacy']['entities']
         if media_data.get('media') != None:
             media_data = media_data['media']
@@ -139,18 +97,18 @@ def get_tweet_details(data):
         retweet_name = retweet['core']['user_results']['result']['legacy']['name']
         text += '转发了 {} 的推文：\n'.format(retweet_name)
         retweet_text = retweet['legacy']['full_text']
-        text += retweet_text + '\n'
-        url = '推文地址：\nhttps://twitter.com/' + screen_name + '/status/' + tweet_id + '\n'
-        translate = retweet_text + '\n'
+        text += retweet_text+'\n'
+        url = '推文地址：\nhttps://twitter.com/'+screen_name+'/status/'+tweet_id+'\n'
+        translate = retweet_text+'\n'
         media_data = retweet['legacy']['entities']
         if media_data.get('media') != None:
             media_data = media_data['media']
             for img in media_data:
                 media.append(img['media_url_https'])
     else:
-        text = '您关注的 {} 推特更新了：\n'.format(name) + data['full_text'] + '\n'
-        translate = data['full_text'] + '\n'
-        url = '推文地址：\nhttps://twitter.com/' + screen_name + '/status/' + tweet_id + '\n'
+        text = '您关注的 {} 推特更新了：\n'.format(name)+data['full_text']+'\n'
+        translate = data['full_text']+'\n'
+        url = '推文地址：\nhttps://twitter.com/'+screen_name+'/status/'+tweet_id+'\n'
         media_data = data['entities']
         if media_data.get('media') != None:
             media_data = media_data['media']
@@ -164,11 +122,12 @@ async def baidu_translate(appid, query, token):
         return ''
     text = ''
     salt = str(random.randint(32768, 65536))
-    sign = appid + query + salt + token
+    sign = appid+query+salt+token
     md5 = hashlib.md5()
     md5.update(sign.encode('utf-8'))
     sign = md5.hexdigest()
-    param = {'q': query, 'from': 'auto', 'to': 'zh', 'appid': appid, 'salt': salt, 'sign': sign}
+    param = {'q': query, 'from': 'auto', 'to': 'zh',
+             'appid': appid, 'salt': salt, 'sign': sign}
     url = 'https://fanyi-api.baidu.com/api/trans/vip/translate'
     async with httpx.AsyncClient() as client:
         try:
@@ -184,5 +143,5 @@ async def baidu_translate(appid, query, token):
         return text
     data = data['trans_result']
     for row in data:
-        text += row['dst'] + '\n'
-    return '推文翻译：\n' + text
+        text += row['dst']+'\n'
+    return '推文翻译：\n'+text
