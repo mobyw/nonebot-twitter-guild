@@ -6,10 +6,10 @@ from pydantic import Field, BaseModel, validator
 
 import nonebot
 from nonebot.log import logger
-from nonebot.adapters.cqhttp.bot import Bot
-from nonebot.adapters.cqhttp.utils import escape
-from nonebot.adapters.cqhttp.message import Message, MessageSegment
-from nonebot.adapters.cqhttp.event import Event, NoticeEvent, MessageEvent
+from nonebot.adapters.onebot.v11.bot import Bot
+from nonebot.adapters.onebot.v11.utils import escape
+from nonebot.adapters.onebot.v11.message import Message, MessageSegment
+from nonebot.adapters.onebot.v11.event import Event, NoticeEvent, MessageEvent
 
 
 class GuildMessageEvent(MessageEvent):
@@ -148,7 +148,7 @@ driver = nonebot.get_driver()
 
 @driver.on_startup
 def patch():
-    import nonebot.adapters.cqhttp.event as events
+    import nonebot.adapters.onebot.v11.event as events
 
     Bot.send = patched_send
 
