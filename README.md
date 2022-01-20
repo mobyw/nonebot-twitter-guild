@@ -15,7 +15,11 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 
 本插件由[HanayoriBot](https://github.com/kanomahoro/nonebot-twitter)修改而来，基于[NoneBot2](https://github.com/nonebot/nonebot2)与[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)，可以及时将Twitter用户的最新推文推送至子频道，并且自带基于百度翻译的推文翻译接口，及时跟进所关注的账号的推文，增加频道活跃度。
 
-注意：本插件v1.2版本已私聊、群聊和子频道。频道相关功能通过[nonebot2频道适配补丁](https://gist.github.com/mnixry/57033047be55956e2168284bcf0bd4b6)实现。
+注意：
+
+本插件从v1.2版本起已支持私聊、群聊和子频道。频道相关功能通过[nonebot2频道适配补丁](https://gist.github.com/mnixry/57033047be55956e2168284bcf0bd4b6)实现。
+
+本插件从v2.1版本起适配 `nonebot2@2.0.0b1` ，在 `nonebot2<=2.0.0a16` 环境下请使用 v1.2。请注意，v2.1中的频道适配补丁需要稍作修改。
 
 ## 特色
 
@@ -47,8 +51,8 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
    nb create
    ```
 
-4. 请在创建项目时选用cqhttp适配器，并且按照文档完成最小实例的创建。
-   
+4. 请在创建项目时选用 onebot v11 适配器，并且按照文档完成最小实例的创建。
+
 ### 配置文件示例
 
 1. .env
@@ -62,7 +66,7 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
    PORT=8080
    SECRET=
    ACCESS_TOKEN=
-   SUPERUSERS=[管理员账户(18位频道QQ号，不是QQ号，可@后在go-cqhttp控制台获得)]
+   SUPERUSERS=[管理员账户(QQ号以及18位频道号，频道号可发送@后在go-cqhttp控制台获得)]
    COMMAND_START=["","/"]
    NICKNAME=["","/"]
    COMMAND_SEP=["."]
@@ -72,7 +76,7 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 
 ### 安装HimesakaBot(Twitter频道插件)
 
-   将本项目`\src\plugins`文件夹下的内容复制到项目的插件目录`\plugins`中。
+将本项目`\src\plugins`文件夹下的内容复制到项目的插件目录`\plugins`中。或下载 release 压缩包后解压到插件目录。
 
 ### 部署 GitHub Actions 自动更新 Token
 
@@ -107,9 +111,9 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
    ```
 
 4. 在按照3设置代理后，请不要关闭终端，在当前终端执行 `nb run` 才能使机器人连上代理（请提前运行 `go-cqhttp`）
-   **注意**：`go-cqhttp` 也必须运行于代理环境中，保证能连接外网，否则无法发送图片！！！
+   **注意**：`go-cqhttp` 也必须运行于代理环境中，保证能连接外网，否则无法发送图片！
 
-5. 在机器人成功运行后，会生成 `config.json` 文件，默认在 `./data/twitter/` 目录若你不需要推文翻译功能，请忽略下一步
+5. 在机器人成功运行后，会生成 `config.json` 文件，默认在 `./data/twitter/` 目录。若你不需要推文翻译功能，可只填写 Token 部分。
 
 6. 用文本编辑器打开 `config.json`
    ```bash
@@ -119,7 +123,7 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 
 ### 指令说明
 
-以下所以指令在子频道中只允许超级用户进行操作
+以下所有指令在子频道中只允许超级用户进行操作（需要手动添加频道号），在私聊中均可使用，群聊中超级用户、群主与管理员可用。
 
 **使用格式**：指令 推特ID(如果指令要求的话) 
 
