@@ -17,11 +17,9 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 
 注意：
 
-本插件从v1.2版本起已支持私聊、群聊和子频道。频道相关功能通过[nonebot2频道适配补丁](https://gist.github.com/mnixry/57033047be55956e2168284bcf0bd4b6)实现。
+本插件从v1.2版本起已支持私聊、群聊和子频道。频道相关功能通过[nonebot2(2.0.0a16)频道适配补丁](https://gist.github.com/mnixry/57033047be55956e2168284bcf0bd4b6)实现，v2.1版本起的频道相关功能通过[nonebot2(2.0.0b1)频道适配补丁](https://gist.github.com/j1g5awi/4952d8951164988a8b8e627aeae92065)实现。
 
-本插件从v2.1版本起适配 `nonebot2@2.0.0b1` ，在 `nonebot2<=2.0.0a16` 环境下请使用 v1.2。
-
-**经测试v2.1在频道中无法正常使用，需要在频道中使用请先安装v1.2**
+本插件从v2.1版本起适配 `nonebot2@2.0.0b1` ，在 `nonebot2@2.0.0a16` 环境下请使用 v1.2。
 
 ## 特色
 

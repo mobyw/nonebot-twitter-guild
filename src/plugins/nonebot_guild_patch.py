@@ -24,15 +24,6 @@ class GuildMessageEvent(MessageEvent):
     raw_message: str = Field(alias="message")
     font: None = None
 
-    def get_guild_id(self) -> str:
-        return str(self.guild_id)
-
-    def get_channel_id(self) -> str:
-        return str(self.channel_id)
-
-    def get_raw_message(self) -> str:
-        return str(self.raw_message)
-
     @validator('raw_message', pre=True)
     def _validate_raw_message(cls, raw_message):
         if isinstance(raw_message, str):
@@ -148,13 +139,14 @@ driver = nonebot.get_driver()
 
 @driver.on_startup
 def patch():
-    import nonebot.adapters.onebot.v11.event as events
+    from nonebot.adapters.onebot.v11.adapter import Adapter
 
     Bot.send = patched_send
 
     for model in globals().values():
         if not inspect.isclass(model) or not issubclass(model, Event):
             continue
-        events._t["." + model.__event__] = model
+        Adapter.event_models["." + model.__event__] = model
 
     logger.debug('Patch for NoneBot2 guild adaptation has been applied.')
+    
