@@ -13,9 +13,11 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 
 ## 简介
 
+**请注意：此分支适配 nonebot2 2.0.0a16 版，若使用 nonebot2 2.0.0b1 请转到 main分支**
+
 本插件由[HanayoriBot](https://github.com/kanomahoro/nonebot-twitter)修改而来，基于[NoneBot2](https://github.com/nonebot/nonebot2)与[go-cqhttp](https://github.com/Mrs4s/go-cqhttp)，可以及时将Twitter用户的最新推文推送至子频道，并且自带基于百度翻译的推文翻译接口，及时跟进所关注的账号的推文，增加频道活跃度。
 
-注意：本插件v1.2版本已私聊、群聊和子频道。频道相关功能通过[nonebot2频道适配补丁](https://gist.github.com/mnixry/57033047be55956e2168284bcf0bd4b6)实现。
+注意：本插件v1.2版本已支持私聊、群聊和子频道。频道相关功能通过[nonebot2频道适配补丁](https://gist.github.com/mnixry/57033047be55956e2168284bcf0bd4b6)实现。
 
 ## 特色
 
@@ -29,16 +31,16 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 
 ### 安装NoneBot2
 
-完整文档可以在 [这里](https://v2.nonebot.dev/) 查看。
+完整文档可以在 [这里](https://61d3d9dbcadf413fd3238e89--nonebot2.netlify.app/) 查看。
 
 懒得看文档？下面是快速安装指南：
 
 1. (可选)使用你喜欢的 Python 环境管理工具创建新的虚拟环境。
 
-2. 使用 `pip` (或其他) 安装 NoneBot 脚手架。
+2. 使用 `pip` (或其他) 安装 nonebot 脚手架。
 
    ```bash
-   pip install nb-cli
+   pip install nb-cli==0.5.3
    ```
 
 3. 使用脚手架创建项目。
@@ -62,17 +64,17 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
    PORT=8080
    SECRET=
    ACCESS_TOKEN=
-   SUPERUSERS=[管理员账户(18位频道QQ号，不是QQ号，可@后在go-cqhttp控制台获得)]
+   SUPERUSERS=[管理员账户(QQ号以及18位频道号，可@后在go-cqhttp控制台获得)]
    COMMAND_START=["","/"]
    NICKNAME=["","/"]
    COMMAND_SEP=["."]
    ```
 
-3. 请务必安装以上示例配置你的Bot；go-cqhttp请自行参照官方文档配置
+3. 请务必安装以上示例配置你的Bot；go-cqhttp请自行参照官方文档配置。
 
 ### 安装HimesakaBot(Twitter频道插件)
 
-   将本项目`\src\plugins`文件夹下的内容复制到项目的插件目录`\plugins`中。
+将本项目`\src\plugins`文件夹下的内容复制到项目的插件目录`\plugins`中。
 
 ### 部署 GitHub Actions 自动更新 Token
 
@@ -107,23 +109,23 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
    ```
 
 4. 在按照3设置代理后，请不要关闭终端，在当前终端执行 `nb run` 才能使机器人连上代理（请提前运行 `go-cqhttp`）
-   **注意**：`go-cqhttp` 也必须运行于代理环境中，保证能连接外网，否则无法发送图片！！！
+   **注意**：`go-cqhttp` 也必须运行于代理环境中，保证能连接外网，否则无法发送图片！
 
-5. 在机器人成功运行后，会生成 `config.json` 文件，默认在 `./data/twitter/` 目录若你不需要推文翻译功能，请忽略下一步
+5. 在机器人成功运行后，会生成 `config.json` 文件，默认在 `./data/twitter/` 目录。
 
 6. 用文本编辑器打开 `config.json`
    ```bash
    {"appid": "填入你申请的百度翻译API的AppID", "baidu_token": "填入你申请的百度翻译API的密钥", ,"api_url":"推特Token更新地址"}
    ```
-   按以上要求填写，在[百度翻译开放平台](https://api.fanyi.baidu.com/)申请普通版通用翻译API即可，免费使用但是有限制调用频率。
+   按以上要求填写，在[百度翻译开放平台](https://api.fanyi.baidu.com/)申请普通版通用翻译API即可，免费使用但是有限制调用频率。若你不需要推文翻译功能，可不填 `appid` 与 `baidu_token` 。
 
 ### 指令说明
 
-以下所以指令在子频道中只允许超级用户进行操作
+以下所以指令在子频道中只允许超级用户进行操作，请在配置文件中添加频道号。
 
 **使用格式**：指令 推特ID(如果指令要求的话) 
 
-**推特ID**：在Twitter的用户主页，@后面的部分；或者‘https://twitter.com/xxxxx’ 用户主页链接中的xxxxx
+**推特ID**：在Twitter的用户主页，@后面的部分；或者 'https://twitter.com/xxxxx' 用户主页链接中的xxxxx
 
 **所有指令如下：**
 
