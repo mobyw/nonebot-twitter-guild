@@ -24,13 +24,13 @@ class GuildMessageEvent(MessageEvent):
     raw_message: str = Field(alias="message")
     font: None = None
 
-    @validator('raw_message', pre=True)
+    @validator("raw_message", pre=True)
     def _validate_raw_message(cls, raw_message):
         if isinstance(raw_message, str):
             return raw_message
         elif isinstance(raw_message, list):
             return str(Message(raw_message))
-        raise ValueError('unknown raw message type')
+        raise ValueError("unknown raw message type")
 
 
 class ReactionInfo(BaseModel):
@@ -114,24 +114,26 @@ class ChannelDestoryedNoticeEvent(ChannelNoticeEvent):
 original_send = Bot.send
 
 
-async def patched_send(self: Bot, event: Event,
-                       message: Union[Message, MessageSegment, str], **kwargs):
+async def patched_send(
+    self: Bot, event: Event, message: Union[Message, MessageSegment, str], **kwargs
+):
     guild_id: Optional[int] = getattr(event, "guild_id", None)
-    channel_id: Optional[int] = getattr(event, 'channel_id', None)
+    channel_id: Optional[int] = getattr(event, "channel_id", None)
     if not (guild_id and channel_id):
         return await original_send(self, event, message, **kwargs)
 
-    user_id: Optional[int] = getattr(event, 'user_id', None)
-    message = escape(message, escape_comma=False) if isinstance(
-        message, str) else message
+    user_id: Optional[int] = getattr(event, "user_id", None)
+    message = (
+        escape(message, escape_comma=False) if isinstance(message, str) else message
+    )
 
     message_sent = message if isinstance(message, Message) else Message(message)
-    if user_id and kwargs.get('at_sender', False):
-        message_sent = MessageSegment.at(user_id) + ' ' + message_sent
+    if user_id and kwargs.get("at_sender", False):
+        message_sent = MessageSegment.at(user_id) + " " + message_sent
 
-    return await self.send_guild_channel_msg(guild_id=guild_id,
-                                             channel_id=channel_id,
-                                             message=message_sent)
+    return await self.send_guild_channel_msg(
+        guild_id=guild_id, channel_id=channel_id, message=message_sent
+    )
 
 
 driver = nonebot.get_driver()
@@ -148,5 +150,4 @@ def patch():
             continue
         Adapter.event_models["." + model.__event__] = model
 
-    logger.debug('Patch for NoneBot2 guild adaptation has been applied.')
-    
+    logger.debug("Patch for NoneBot2 guild adaptation has been applied.")
