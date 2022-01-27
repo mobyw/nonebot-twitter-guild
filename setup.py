@@ -25,6 +25,5 @@ setup(
         "nb-cli>=0.6.4",
         "nonebot-adapter-cqhttp>=2.0.0b1",
         "nonebot-plugin-apscheduler>=0.1.2",
-        "selenium==2.48.0",
     ],
 )
