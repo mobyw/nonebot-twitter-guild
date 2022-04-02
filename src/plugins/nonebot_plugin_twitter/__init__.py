@@ -28,15 +28,16 @@ from .nonebot_guild_patch import GuildMessageEvent, ChannelDestoryedNoticeEvent
 
 model.Init()
 tweet_index = 0
-
-if config.api_url == "":
+if config.api_url == "" or config.github_token == "":
     raise Exception("这可能是您第一次运行本插件，请按照文档填写 config.json 后重新运行！")
+
+headers = {"Authorization": f"token {config.github_token}"}
+
 try:
-    response = httpx.get(url=config.api_url)
+    response = httpx.get(url=config.api_url, headers=headers)
     config.token = response.json()["value"]
 except:
     raise Exception("token初始化失败，请检查网络设置或API地址是否正确！")
-
 
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
@@ -47,7 +48,7 @@ async def flush():
     logger.info("开始刷新token")
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(url=config.api_url)
+            response = await client.get(url=config.api_url, headers=headers)
             config.token = response.json()["value"]
             logger.info("token更新成功！")
     except:

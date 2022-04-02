@@ -41,14 +41,19 @@ async def get_user_info(name: str, token: str):
 
 async def get_latest_tweet(user_id, token):
     headers = {
-        "authorization": "Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36 Edg/94.0.992.38",
+        "authorization": "Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs"
+                         "%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/94.0.4606.71 Safari/537.36 Edg/94.0.992.38",
         "x-guest-token": "%s" % token,
     }
     params = (
         (
             "variables",
-            '{"userId":"%s","count":2,"withTweetQuoteCount":true,"includePromotedContent":true,"withSuperFollowsUserFields":false,"withUserResults":true,"withBirdwatchPivots":false,"withReactionsMetadata":false,"withReactionsPerspective":false,"withSuperFollowsTweetFields":false,"withVoice":true}'
+            '{"userId":"%s","count":2,"withTweetQuoteCount":true,"includePromotedContent":true,'
+            '"withSuperFollowsUserFields":false,"withUserResults":true,"withBirdwatchPivots":false,'
+            '"withReactionsMetadata":false,"withReactionsPerspective":false,"withSuperFollowsTweetFields":false,'
+            '"withVoice":true} '
             % user_id,
         ),
     )
@@ -65,7 +70,7 @@ async def get_latest_tweet(user_id, token):
             return "", {}
     dict_word = response.json()
     data = dict_word["data"]["user"]["result"]["timeline"]["timeline"]["instructions"][
-        0
+        1
     ]["entries"]
     return data[0]["sortIndex"], data
 
