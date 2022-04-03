@@ -80,7 +80,7 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 
 ### 部署 GitHub Actions 自动更新 Token
 
-此步骤请转至原作者的 [twitterAutoToken](https://github.com/kanomahoro/twitterAutoToken) 项目。
+此步骤请转至 [twitterAutoToken](https://github.com/mobyw/twitterAutoToken) 项目。
 
 ### 配置HimesakaBot(Twitter频道插件)
 
