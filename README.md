@@ -11,8 +11,12 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 
 </div>
 
+<!-- markdownlint-disable-next-line MD036 -->
+**当前项目已停止维护**，请使用 [`ELF_RSS`](https://github.com/Quan666/ELF_RSS) 。
+
 ## 简介
 
+<!-- markdownlint-disable-next-line MD036 -->
 **请注意：此分支适配 nonebot2 2.0.0b1 及以上，若使用 nonebot2 2.0.0a16 请转到 alpha 分支**
 
 **v1.2 与 v2.x 数据格式兼容，若需迁移直接复制数据文件夹到迁移后对应路径即可。**
@@ -56,11 +60,13 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 ### 配置文件示例
 
 1. .env
+
    ```yml
    ENVIRONMENT=prod
    ```
 
 2. .env.prod
+
    ```yml
    HOST=127.0.0.1
    PORT=8080
@@ -93,18 +99,22 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 3. 根据平台不同，请按照以下方式分别设置代理：
 
    1. Windows 平台 cmd 环境
+
    ```bash
    set http_proxy=http://127.0.0.1:端口号  
    set https_proxy=http://127.0.0.1:端口号  
    ```
 
    2. Windows 平台 PowerShell 环境
+
    ```bash
    $env:HTTP_PROXY="127.0.0.1:端口号"  
    $env:HTTPS_PROXY="127.0.0.1:端口号" 
    ```
 
+
    3. Linux 平台 Bash 环境
+
    ```bash
    export http_proxy=http://127.0.0.1:端口号 
    export https_proxy=http://127.0.0.1:端口号 
@@ -116,9 +126,11 @@ _✨ 由HanayoriBot修改的基于NoneBot2的Twitter推送插件，可接入百�
 5. 在机器人成功运行后，会生成 `config.json` 文件，默认在 `./data/twitter/` 目录。
 
 6. 用文本编辑器打开 `config.json`
+
    ```bash
    {"appid": "填入你申请的百度翻译API的AppID", "baidu_token": "填入你申请的百度翻译API的密钥", ,"api_url":"推特Token更新地址"}
    ```
+
    按以上要求填写，在[百度翻译开放平台](https://api.fanyi.baidu.com/)申请普通版通用翻译API即可，免费使用但是有限制调用频率。若你不需要推文翻译功能，可只填写 Token 部分。
 
 ### 指令说明
